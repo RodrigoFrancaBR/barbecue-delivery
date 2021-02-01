@@ -14,6 +14,8 @@ export class UserService {
   // porem inicio já passando um valor nesse caso null; quando emito o valor, e ninguem se pega fico aguardando até que alguem pegue o valor
   // diferente do subject que emite e se vc nao pegou não pega mais. 
   private userSubject = new BehaviorSubject<User>(null);
+  
+  userName: string;
 
   constructor(private tokenService: TokenService) {
     // caso o user feche o navegador ele não vai passar pelo processo de login,
@@ -41,12 +43,32 @@ export class UserService {
     const token = this.tokenService.getToken();
     // decodifica o token
     const user = jwt_decode(token) as User;
+    this.setUserName(user.name);
     // emit
     this.userSubject.next(user);
+  }
+
+  private setUserName(userName: string) {
+    this.userName = userName;
   }
 
   getUser() {
     return this.userSubject.asObservable();
   }
+
+  logout() {
+    this.tokenService.removeToken();
+    // apagar o userName no header
+    this.userSubject.next(null);
+  }
+
+  isLogged() {
+    return this.tokenService.hasToken();
+  }
+
+  getUserName() {
+    return this.userName;
+}
+
 
 }

@@ -16,21 +16,11 @@ import { SignInComponent } from './home/signin/signin.component';
 export const routes: Routes = [
 
   {
-    path: '', component: SignInComponent,
+    path: '', component: SignInComponent,    
     data: {
       title: 'Login Page'
     }
-  },
-
-  // {
-  //   path: '', redirectTo: 'home', pathMatch: 'full'
-  // },
-
-  // {
-  //   path: 'home',
-  //   component: HomeComponent,
-  //   canActivate: [AuthGuard]
-  // },  
+  }, 
 
   {
     path: 'register',
@@ -43,6 +33,7 @@ export const routes: Routes = [
   {
     path: 'default',
     component: DefaultLayoutComponent,
+    canActivate:[AuthGuard],
     data: {
       title: 'Home'
     },
